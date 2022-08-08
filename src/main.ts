@@ -1,8 +1,11 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { Logger } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from './app.module'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3101);
+  const app = await NestFactory.create(AppModule)
+  await app.listen(3101, () => {
+    Logger.log(`API服务已经启动,服务请访问:http://localhost:3101`)
+  })
 }
-bootstrap();
+bootstrap()
