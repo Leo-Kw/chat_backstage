@@ -1,13 +1,20 @@
-import { Controller, Get } from '@nestjs/common'
-import { ChatService } from './user.service'
-// import { ApiTags } from '@nestjs/swagger'
+import { Controller, Get, Post, Body, Query } from '@nestjs/common'
+import { UserService } from './user.service'
+import { ApiTags } from '@nestjs/swagger'
+import { UserLoginDto } from './dto/login.user.dto'
 
 @Controller('/user')
-export class ChatController {
-  constructor(private readonly ChatService: ChatService) {}
+@ApiTags('User')
+export class UserController {
+  constructor(private readonly UserService: UserService) {}
 
   @Get()
   getHello(): string {
-    return this.ChatService.getHello()
+    return this.UserService.getHello()
+  }
+
+  @Post('/login')
+  login(@Body() params: UserLoginDto) {
+    return this.UserService.login(params)
   }
 }

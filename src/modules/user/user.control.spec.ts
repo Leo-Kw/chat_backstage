@@ -1,22 +1,22 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ChatController } from './user.controller'
-import { ChatService } from './user.service'
+import { UserController } from './user.controller'
+import { UserService } from './user.service'
 
-describe('chatController', () => {
-  let chatController: ChatController
+describe('userController', () => {
+  let userController: UserController
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      controllers: [ChatController],
-      providers: [ChatService],
+      controllers: [UserController],
+      providers: [UserService],
     }).compile()
 
-    chatController = app.get<ChatController>(ChatController)
+    userController = app.get<UserController>(UserController)
   })
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(chatController.getHello()).toBe('Hello World!')
+      expect(userController.getHello()).toBe('Hello World!')
     })
   })
 })
