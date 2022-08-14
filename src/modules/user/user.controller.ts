@@ -8,9 +8,14 @@ import { UserLoginDto } from './dto/login.user.dto'
 export class UserController {
   constructor(private readonly UserService: UserService) {}
 
-  @Get()
-  getHello(): string {
-    return this.UserService.getHello()
+  // @Get()
+  // getHello(): string {
+  //   return this.UserService.getHello()
+  // }
+
+  @Post('/register')
+  register(@Body() params: any) {
+    return this.UserService.register(params)
   }
 
   @Post('/login')
