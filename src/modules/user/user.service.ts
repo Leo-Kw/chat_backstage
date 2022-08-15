@@ -63,7 +63,7 @@ export class UserService {
       }
     } else {
       throw new HttpException(
-        { message: '账号或密码错误' },
+        '账号或密码错误',
         HttpStatus.BAD_REQUEST,
       )
     }

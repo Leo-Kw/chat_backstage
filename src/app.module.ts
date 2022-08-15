@@ -9,10 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
   imports: [
     ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
     TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => {
-        console.log(config.get('database'))
-        return config.get('database')
-      },
+      useFactory: (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
     ChatModule,
