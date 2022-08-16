@@ -1,20 +1,16 @@
-import { Controller, Get, Post, Body, Query } from '@nestjs/common'
+import { Controller, Post, Body } from '@nestjs/common'
 import { UserService } from './user.service'
 import { ApiTags } from '@nestjs/swagger'
 import { UserLoginDto } from './dto/login.user.dto'
+import { UserRegisterDto } from './dto/register.user.dto'
 
 @Controller('/user')
 @ApiTags('User')
 export class UserController {
   constructor(private readonly UserService: UserService) {}
 
-  // @Get()
-  // getHello(): string {
-  //   return this.UserService.getHello()
-  // }
-
   @Post('/register')
-  register(@Body() params: any) {
+  register(@Body() params: UserRegisterDto) {
     return this.UserService.register(params)
   }
 
