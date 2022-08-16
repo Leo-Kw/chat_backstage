@@ -62,10 +62,7 @@ export class UserService {
         }),
       }
     } else {
-      throw new HttpException(
-        '账号或密码错误',
-        HttpStatus.BAD_REQUEST,
-      )
+      throw new HttpException('账号或密码错误', HttpStatus.BAD_REQUEST)
     }
   }
 }
