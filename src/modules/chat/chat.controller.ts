@@ -1,13 +1,14 @@
-import { Controller, Get } from '@nestjs/common'
+import { Body, Controller, Post } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
 import { ChatService } from './chat.service'
-// import { ApiTags } from '@nestjs/swagger'
 
 @Controller('/chat')
+@ApiTags('Chat')
 export class ChatController {
   constructor(private readonly ChatService: ChatService) {}
 
-  @Get()
-  getHello(): string {
-    return this.ChatService.getHello()
+  @Post('/test')
+  login(@Body() params: any) {
+    return this.ChatService.create(params)
   }
 }
