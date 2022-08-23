@@ -34,7 +34,6 @@ export class ChatGateway {
 
   @SubscribeMessage('socketTest')
   socketTest(@MessageBody() data: any) {
-    Logger.log(data) // {test: '测试数据'}
     return {
       msg1: '测试1',
       msg2: '测试2',
