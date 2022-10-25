@@ -7,8 +7,8 @@ import { ChatService } from './chat.service'
 export class ChatController {
   constructor(private readonly ChatService: ChatService) {}
 
-  @Post('/test')
-  login(@Body() params: any) {
-    return this.ChatService.create(params)
+  @Post('/getRecord')
+  getRecord(@Body() params: any) {
+    return this.ChatService.getRecord(params)
   }
 }

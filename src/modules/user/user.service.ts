@@ -13,10 +13,6 @@ export class UserService {
     private readonly JwtService: JwtService,
   ) {}
 
-  // getHello(): string {
-  //   return 'user!'
-  // }
-
   /**
    * @desc 账号注册
    * @param params
@@ -44,15 +40,29 @@ export class UserService {
   async login(params): Promise<any> {
     const { account, password } = params
     const u: any = await this.UserModle.findOne({
-      where: [{ account: account }],
+      where: { account },
+      select: [
+        'id',
+        'sex',
+        'name',
+        'email',
+        'sign',
+        'role',
+        'room_id',
+        'avatar',
+        'account',
+        'password',
+      ],
     })
     if (!u) {
       throw new HttpException('该用户不存在！', HttpStatus.BAD_REQUEST)
     }
     const bool = compareSync(password, u.password)
+    const { password: dbPassword, ...rest } = u
     if (bool) {
       const { name, account, email, id, role } = u
       return {
+        userInfo: rest,
         token: this.JwtService.sign({
           name,
           account,
@@ -64,5 +74,30 @@ export class UserService {
     } else {
       throw new HttpException('账号或密码错误', HttpStatus.BAD_REQUEST)
     }
+  }
+
+  /**
+   * @desc 获取用户信息
+   * @param params
+   * @returns
+   */
+  async getUserInfo(payload) {
+    console.log(payload)
+    const { user_id: id, exp: failure_time } = payload
+    const u = await this.UserModle.findOne({
+      where: { id },
+      select: [
+        'id',
+        'sex',
+        'name',
+        'email',
+        'sign',
+        'role',
+        'room_id',
+        'avatar',
+        'account',
+      ],
+    })
+    return u
   }
 }

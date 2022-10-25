@@ -1,8 +1,7 @@
-import { Controller, Post, Body } from '@nestjs/common'
+import { Controller, Post, Body, Request, Get } from '@nestjs/common'
 import { UserService } from './user.service'
 import { ApiTags } from '@nestjs/swagger'
-import { UserLoginDto } from './dto/login.user.dto'
-import { UserRegisterDto } from './dto/register.user.dto'
+import { UserGetInfo, UserLoginDto, UserRegisterDto } from './dto/user.dto'
 
 @Controller('/user')
 @ApiTags('User')
@@ -17,5 +16,10 @@ export class UserController {
   @Post('/login')
   login(@Body() params: UserLoginDto) {
     return this.UserService.login(params)
+  }
+
+  @Get('/getUserInfo')
+  getUserInfo(@Request() req) {
+    return this.UserService.getUserInfo(req.payload)
   }
 }
