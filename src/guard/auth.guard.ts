@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
           HttpStatus.UNAUTHORIZED,
         )
       }
-      // request.payload = payload
+      request.payload = payload
       return true
     } else {
       // if (isGet) return true

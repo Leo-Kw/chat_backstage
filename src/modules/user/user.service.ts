@@ -4,6 +4,8 @@ import { hashSync, compareSync } from 'bcryptjs'
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
+import { UserLoginDto, UserRegisterDto } from './dto/user.dto'
+import { UserInfoType } from './user.type'
 
 @Injectable()
 export class UserService {
@@ -18,7 +20,7 @@ export class UserService {
    * @param params
    * @returns
    */
-  async register(params) {
+  async register(params: UserRegisterDto) {
     const { account, password, email } = params
     params.password = hashSync(password)
     const u: any = await this.UserModle.findOne({
@@ -37,7 +39,7 @@ export class UserService {
    * @param params
    * @returns
    */
-  async login(params): Promise<any> {
+  async login(params: UserLoginDto): Promise<any> {
     const { account, password } = params
     const u: any = await this.UserModle.findOne({
       where: { account },
@@ -81,9 +83,8 @@ export class UserService {
    * @param params
    * @returns
    */
-  async getUserInfo(payload) {
-    console.log(payload)
-    const { user_id: id, exp: failure_time } = payload
+  async getUserInfo(payload: UserInfoType) {
+    const { id } = payload
     const u = await this.UserModle.findOne({
       where: { id },
       select: [

@@ -5,8 +5,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { CreateChatDto } from './dto/create-chat.dto'
-import { UpdateChatDto } from './dto/update-chat.dto'
 import { Server, Socket } from 'socket.io'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MessageEntity } from './entities/message.entity'
@@ -30,8 +28,7 @@ export class ChatGateway {
   @WebSocketServer() private socket: Server
 
   @SubscribeMessage('sendMessage')
-  socketTest(@MessageBody() data: any) {
-    console.log(data)
+  async socketTest(@MessageBody() data: any) {
     const quoteUserId = null
     const quoteMessageId = null
     const roomId = 1
@@ -41,11 +38,12 @@ export class ChatGateway {
       quoteMessageId,
       roomId,
     }
-    this.MessageModle.save(params)
-    return {
-      msg1: '测试1',
-      msg2: '测试2',
-    }
+    const message = await this.MessageModle.save(params)
+    const result = this.socket.emit('message', {
+      data: message,
+      msg: '有一条新消息',
+    })
+    return result
   }
 
   // @SubscribeMessage('createChat')

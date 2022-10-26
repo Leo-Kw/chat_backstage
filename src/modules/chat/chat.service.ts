@@ -12,15 +12,15 @@ export class ChatService {
     private readonly MessageModel: Repository<MessageEntity>, // @InjectRepository(UserEntity) // private readonly UserModel: Repository<UserEntity>,
   ) {}
 
-  async getRecord(params) {
+  async getMessage(params) {
     const { page = 1, pageSize = 300, roomId = 1 } = params
     const history = await this.MessageModel.find({
       where: { roomId },
-      order: { id: 'ASC' },
+      order: { id: 'DESC' },
       skip: (page - 1) * pageSize,
       take: pageSize,
     })
-    return history
+    return history.reverse()
   }
   // create(createChatDto: CreateChatDto) {
   //   return 'This action adds a new chat'
