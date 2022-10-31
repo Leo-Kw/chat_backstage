@@ -11,7 +11,7 @@ import { MessageEntity } from './entities/message.entity'
 import { Repository } from 'typeorm'
 
 @WebSocketGateway(3102, {
-  path: '/chat',
+  path: '/chat-socket',
   allowEIO3: true,
   cors: {
     origin: '*',

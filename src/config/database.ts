@@ -26,6 +26,6 @@ const productionConfig: DataSourceOptions = {
 }
 
 const DatabaseConfig: DataSourceOptions =
-  process.env.NODE_ENV === 'production' ? productionConfig : developmentConfig
+  process.env.NODE_ENV === 'development' ? developmentConfig : productionConfig
 
 export default DatabaseConfig
