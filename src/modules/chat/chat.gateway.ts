@@ -5,13 +5,15 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { CreateChatDto } from './dto/create-chat.dto'
-import { UpdateChatDto } from './dto/update-chat.dto'
 import { Server, Socket } from 'socket.io'
-import { Logger } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { MessageEntity } from './entities/message.entity'
+import { Repository } from 'typeorm'
+import { CreateChatDto } from './dto/create-chat.dto'
+import { UserEntity } from '../user/user.entity'
 
 @WebSocketGateway(3102, {
-  path: '/chat',
+  path: '/chat-socket',
   allowEIO3: true,
   cors: {
     origin: '*',
@@ -19,49 +21,62 @@ import { Logger } from '@nestjs/common'
   },
 })
 export class ChatGateway {
-  constructor(private readonly chatService: ChatService) {}
+  constructor(
+    @InjectRepository(MessageEntity)
+    private readonly MessageModle: Repository<MessageEntity>,
+    @InjectRepository(UserEntity)
+    private readonly UserModel: Repository<UserEntity>,
+    private readonly chatService: ChatService,
+  ) {}
 
   @WebSocketServer() private socket: Server
 
-  @SubscribeMessage('hello')
-  hello(@MessageBody() data: any): any {
-    return {
-      event: 'hello',
-      data: data,
-      msg: 'rustfisher.com',
+  @SubscribeMessage('sendMessage')
+  async handleMessage(@MessageBody() data: CreateChatDto) {
+    const params = {
+      ...data,
+      quoteUserId: null,
+      quoteMessageId: null,
+      roomId: 1,
     }
+    const { userName, userRole, userId, ...restMessage } =
+      await this.MessageModle.save(params)
+    const userInfo = await this.UserModel.findOne({
+      where: { id: userId },
+      select: ['name', 'role', 'avatar', 'id'],
+    })
+    const result = this.socket.emit('message', {
+      data: {
+        userInfo,
+        ...restMessage,
+      },
+      msg: '有一条新消息',
+    })
+    return result
   }
 
-  @SubscribeMessage('socketTest')
-  socketTest(@MessageBody() data: any) {
-    return {
-      msg1: '测试1',
-      msg2: '测试2',
-    }
-  }
+  // @SubscribeMessage('createChat')
+  // create(@MessageBody() createChatDto: CreateChatDto) {
+  //   return this.chatService.create(createChatDto)
+  // }
 
-  @SubscribeMessage('createChat')
-  create(@MessageBody() createChatDto: CreateChatDto) {
-    return this.chatService.create(createChatDto)
-  }
+  // @SubscribeMessage('findAllChat')
+  // findAll() {
+  //   return this.chatService.findAll()
+  // }
 
-  @SubscribeMessage('findAllChat')
-  findAll() {
-    return this.chatService.findAll()
-  }
+  // @SubscribeMessage('findOneChat')
+  // findOne(@MessageBody() id: number) {
+  //   return this.chatService.findOne(id)
+  // }
 
-  @SubscribeMessage('findOneChat')
-  findOne(@MessageBody() id: number) {
-    return this.chatService.findOne(id)
-  }
+  // @SubscribeMessage('updateChat')
+  // update(@MessageBody() updateChatDto: UpdateChatDto) {
+  //   return this.chatService.update(updateChatDto.id, updateChatDto)
+  // }
 
-  @SubscribeMessage('updateChat')
-  update(@MessageBody() updateChatDto: UpdateChatDto) {
-    return this.chatService.update(updateChatDto.id, updateChatDto)
-  }
-
-  @SubscribeMessage('removeChat')
-  remove(@MessageBody() id: number) {
-    return this.chatService.remove(id)
-  }
+  // @SubscribeMessage('removeChat')
+  // remove(@MessageBody() id: number) {
+  //   return this.chatService.remove(id)
+  // }
 }

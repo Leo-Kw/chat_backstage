@@ -4,6 +4,7 @@ import { IoAdapter } from '@nestjs/platform-socket.io'
 import { AppModule } from './app.module'
 import { TransformInterceptor } from './interceptor/transform.interceptor'
 import { AuthGuard } from './guard'
+import { createSwagger } from './swagger'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -12,9 +13,12 @@ async function bootstrap() {
   app.useGlobalGuards(new AuthGuard())
   app.useGlobalInterceptors(new TransformInterceptor())
   app.setGlobalPrefix('/api')
+  createSwagger(app)
   await app.listen(process.env.PORT, () => {
+    process.title = '航仔的chat room'
     Logger.log(`API服务已经启动,服务请访问:http://localhost:3101`)
     Logger.log(`WebSocket服务已经启动,服务请访问:http://localhost:3102`)
+    Logger.log(`swagger已经启动,服务请访问:http://localhost:3101/docs`)
   })
 }
 bootstrap()

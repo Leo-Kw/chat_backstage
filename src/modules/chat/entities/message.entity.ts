@@ -3,24 +3,32 @@ import { BaseEntity } from 'src/common/entity/baseEntity'
 
 @Entity({ name: 'message' })
 export class MessageEntity extends BaseEntity {
-  @Column({ comment: '用户id' })
-  user_id: number
+  @Column({ name: 'user_id', comment: '用户id' })
+  userId: number
 
-  @Column({ comment: '房间ID' })
-  room_id: number
+  @Column({ name: 'room_id', comment: '房间ID' })
+  roomId: number
 
-  @Column('text')
-  message_content: string
+  @Column({ name: 'message_content', type: 'text' })
+  messageContent: string
 
-  @Column({ length: 64, comment: '消息类型' })
-  message_type: string
+  @Column({ name: 'message_type', length: 64, comment: '消息类型' })
+  messageType: string
 
-  @Column({ nullable: true, comment: '引用消息人的id[引用了谁的消息]' })
-  quote_user_id: number
+  @Column({
+    name: 'quote_user_id',
+    nullable: true,
+    comment: '引用消息人的id[引用了谁的消息]',
+  })
+  quoteUserId: number
 
-  @Column({ nullable: true, comment: '引用的消息ID' })
-  quote_message_id: number
+  @Column({ name: 'quote_message_id', nullable: true, comment: '引用的消息ID' })
+  quoteMessageId: number
 
-  @Column({ comment: '消息状态： 1: 正常 -1: 已撤回', default: 1 })
-  message_status: number
+  @Column({
+    name: 'message_status',
+    comment: '消息状态 1: 正常 -1: 已撤回',
+    default: 1,
+  })
+  messageStatus: number
 }
