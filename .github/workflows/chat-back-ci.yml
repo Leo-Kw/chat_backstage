@@ -6,8 +6,6 @@ name: chat CI
 on:
   push:
     branches: ['master']
-  pull_request:
-    branches: ['master']
 
 env:
   SERVER_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }} # 服务器私钥
