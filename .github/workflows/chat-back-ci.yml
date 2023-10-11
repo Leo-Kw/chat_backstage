@@ -46,8 +46,7 @@ jobs:
         uses: easingthemes/ssh-deploy@v2.1.2
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }} # 服务器私钥
-          EXCLUDE:
-          ARGS: '-avz --delete --exclude={'.env'}'
+          ARGS: "-avz --delete --exclude={'.env'}"
           SOURCE: './'
           REMOTE_HOST: ${{ secrets.SERVER_HOST }} # 服务器IP地址
           REMOTE_USER: ${{ secrets.USER_NAME }} # 服务器用户名
