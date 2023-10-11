@@ -9,12 +9,14 @@ specifiers:
   '@nestjs/platform-express': ^9.0.0
   '@nestjs/platform-socket.io': ^9.0.11
   '@nestjs/schematics': ^9.0.0
+  '@nestjs/serve-static': ^4.0.0
   '@nestjs/swagger': ^6.0.5
   '@nestjs/testing': ^9.0.0
   '@nestjs/typeorm': ^9.0.1
   '@nestjs/websockets': ^9.0.11
-  '@types/express': ^4.17.13
+  '@types/express': ^4.17.17
   '@types/jest': 28.1.4
+  '@types/multer': ^1.4.7
   '@types/node': ^16.0.0
   '@types/supertest': ^2.0.11
   '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -23,11 +25,13 @@ specifiers:
   class-transformer: ^0.5.1
   class-validator: ^0.13.2
   cross-env: ^7.0.3
+  dayjs: ^1.11.9
   eslint: ^8.0.1
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   jest: 28.1.2
   jsonwebtoken: ^8.5.1
+  multer: 1.4.5-lts.1
   mysql2: ^2.3.3
   nestjs-config: ^1.4.10
   prettier: ^2.3.2
@@ -49,9 +53,11 @@ dependencies:
   '@nestjs/common': 9.0.8_allg6cauirbqzgqcmexy2wdnoq
   '@nestjs/core': 9.0.8_qcg2q2hoyv6mdzofi5ayiceoi4
   '@nestjs/platform-express': 9.0.8_cw6o3dkuyuli4a5gq7b223evly
+  '@nestjs/serve-static': 4.0.0_cw6o3dkuyuli4a5gq7b223evly
   '@nestjs/swagger': 6.0.5_t5c7ncqnk2fwu54zrommbwzp4i
   class-transformer: 0.5.1
   class-validator: 0.13.2
+  multer: 1.4.5-lts.1
   reflect-metadata: 0.1.13
   rimraf: 3.0.2
   rxjs: 7.5.6
@@ -66,14 +72,16 @@ devDependencies:
   '@nestjs/testing': 9.0.8_lwpb2d46aphloofqfhxfte74su
   '@nestjs/typeorm': 9.0.1_y2o4tfyqpkk2hlczj3r36cju7u
   '@nestjs/websockets': 9.0.11_b2baxz2rpy3s6xkto7t5r2mnoy
-  '@types/express': 4.17.13
+  '@types/express': 4.17.17
   '@types/jest': 28.1.4
+  '@types/multer': 1.4.7
   '@types/node': 16.11.47
   '@types/supertest': 2.0.12
   '@typescript-eslint/eslint-plugin': 5.32.0_iosr3hrei2tubxveewluhu5lhy
   '@typescript-eslint/parser': 5.32.0_qugx7qdu5zevzvxaiqyxfiwquq
   bcryptjs: 2.4.3
   cross-env: 7.0.3
+  dayjs: 1.11.9
   eslint: 8.21.0
   eslint-config-prettier: 8.5.0_eslint@8.21.0
   eslint-plugin-prettier: 4.2.1_h62lvancfh4b7r6zn2dgodrh5e
@@ -1006,6 +1014,27 @@ packages:
       - chokidar
     dev: true
 
+  /@nestjs/serve-static/4.0.0_cw6o3dkuyuli4a5gq7b223evly:
+    resolution: {integrity: sha512-8cTrNV2ngdHIjiLNsXePnw0+KY1ThrZGz/WeyAG5gIvmZNDbnZBOrPoYlKL+MOzlXlQStxR5jKLYmn+nJeoncQ==}
+    peerDependencies:
+      '@fastify/static': ^6.5.0
+      '@nestjs/common': ^9.0.0 || ^10.0.0
+      '@nestjs/core': ^9.0.0 || ^10.0.0
+      express: ^4.18.1
+      fastify: ^4.7.0
+    peerDependenciesMeta:
+      '@fastify/static':
+        optional: true
+      express:
+        optional: true
+      fastify:
+        optional: true
+    dependencies:
+      '@nestjs/common': 9.0.8_allg6cauirbqzgqcmexy2wdnoq
+      '@nestjs/core': 9.0.8_qcg2q2hoyv6mdzofi5ayiceoi4
+      path-to-regexp: 0.2.5
+    dev: false
+
   /@nestjs/swagger/6.0.5_t5c7ncqnk2fwu54zrommbwzp4i:
     resolution: {integrity: sha512-Iy6/Xvd+YVC2F6flIDew5/VnpM2m7kK3IMoft0JqQc0RVXEO45+9gSasN6c8E/s0PbOy9de055mivAhFjk/+lA==}
     peerDependencies:
@@ -1225,19 +1254,20 @@ packages:
   /@types/estree/0.0.51:
     resolution: {integrity: sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==}
 
-  /@types/express-serve-static-core/4.17.30:
-    resolution: {integrity: sha512-gstzbTWro2/nFed1WXtf+TtrpwxH7Ggs4RLYTLbeVgIkUQOI3WG/JKjgeOU1zXDvezllupjrf8OPIdvTbIaVOQ==}
+  /@types/express-serve-static-core/4.17.35:
+    resolution: {integrity: sha512-wALWQwrgiB2AWTT91CB62b6Yt0sNHpznUXeZEcnPU3DRdlDIz74x8Qg1UUYKSVFi+va5vKOLYRBI1bRKiLLKIg==}
     dependencies:
       '@types/node': 16.11.47
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
+      '@types/send': 0.17.1
     dev: true
 
-  /@types/express/4.17.13:
-    resolution: {integrity: sha512-6bSZTPaTIACxn48l50SR+axgrqm6qXFIxrdAKaG6PaJk3+zuUr35hBlgT7vOmJcum+OEaIBLtHV/qloEAFITeA==}
+  /@types/express/4.17.17:
+    resolution: {integrity: sha512-Q4FmmuLGBG58btUnfS1c1r/NQdlp3DMfGDGig8WhfpA2YRUtEkxAjkZb0yvplJGYdF1fsQ81iMDcH24sSCNC/Q==}
     dependencies:
       '@types/body-parser': 1.19.2
-      '@types/express-serve-static-core': 4.17.30
+      '@types/express-serve-static-core': 4.17.35
       '@types/qs': 6.9.7
       '@types/serve-static': 1.15.0
     dev: true
@@ -1284,8 +1314,18 @@ packages:
       '@types/node': 16.11.47
     dev: true
 
+  /@types/mime/1.3.2:
+    resolution: {integrity: sha512-YATxVxgRqNH6nHEIsvg6k2Boc1JHI9ZbH5iWFFv/MTkchz3b1ieGDa5T0a9RznNdI0KhVbdbWSN+KWWrQZRxTw==}
+    dev: true
+
   /@types/mime/3.0.1:
     resolution: {integrity: sha512-Y4XFY5VJAuw0FgAqPNd6NNoV44jbq9Bz2L7Rh/J6jLTiHBSBJa9fxqQIvkIld4GsoDOcCbvzOUAbLPsSKKg+uA==}
+    dev: true
+
+  /@types/multer/1.4.7:
+    resolution: {integrity: sha512-/SNsDidUFCvqqcWDwxv2feww/yqhNeTRL5CVoL3jU4Goc4kKEL10T7Eye65ZqPNi4HRx8sAEX59pV1aEH7drNA==}
+    dependencies:
+      '@types/express': 4.17.17
     dev: true
 
   /@types/node/16.11.47:
@@ -1305,6 +1345,13 @@ packages:
 
   /@types/range-parser/1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: true
+
+  /@types/send/0.17.1:
+    resolution: {integrity: sha512-Cwo8LE/0rnvX7kIIa3QHCkcuF21c05Ayb0ZfxPiv0W8VRiZiNW/WuRupHKpqqGVGf7SUA44QSOUKaEd9lIrd/Q==}
+    dependencies:
+      '@types/mime': 1.3.2
+      '@types/node': 16.11.47
     dev: true
 
   /@types/serve-static/1.15.0:
@@ -2181,6 +2228,10 @@ packages:
   /date-fns/2.29.1:
     resolution: {integrity: sha512-dlLD5rKaKxpFdnjrs+5azHDFOPEu4ANy/LTh04A1DTzMM7qoajmKCBc8pkKRFT41CNzw+4gQh79X5C+Jq27HAw==}
     engines: {node: '>=0.11'}
+    dev: true
+
+  /dayjs/1.11.9:
+    resolution: {integrity: sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==}
     dev: true
 
   /debug/2.6.9:
@@ -3943,6 +3994,19 @@ packages:
       type-is: 1.6.18
       xtend: 4.0.2
 
+  /multer/1.4.5-lts.1:
+    resolution: {integrity: sha512-ywPWvcDMeH+z9gQq5qYHCCy+ethsk4goepZ45GLD63fOu0YcNecQxi64nDs3qluZB+murG3/D4dJ7+dGctcCQQ==}
+    engines: {node: '>= 6.0.0'}
+    dependencies:
+      append-field: 1.0.0
+      busboy: 1.6.0
+      concat-stream: 1.6.2
+      mkdirp: 0.5.6
+      object-assign: 4.1.1
+      type-is: 1.6.18
+      xtend: 4.0.2
+    dev: false
+
   /mute-stream/0.0.8:
     resolution: {integrity: sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==}
     dev: true
@@ -4195,6 +4259,10 @@ packages:
 
   /path-to-regexp/0.1.7:
     resolution: {integrity: sha512-5DFkuoqlv1uYQKxy8omFBeJPQcdoE07Kv2sferDCrAq1ohOU+MSDswDIbnx3YAM60qIOnYa53wBhXW0EbMonrQ==}
+
+  /path-to-regexp/0.2.5:
+    resolution: {integrity: sha512-l6qtdDPIkmAmzEO6egquYDfqQGPMRNGjYtrU13HAXb3YSRrt7HSb1sJY0pKp6o2bAa86tSB6iwaW2JbthPKr7Q==}
+    dev: false
 
   /path-to-regexp/3.2.0:
     resolution: {integrity: sha512-jczvQbCUS7XmS7o+y1aEO9OBVFeZBQ1MDSEqmO7xSoPgOPoowY/SxLpZ6Vh97/8qHZOteiCKb7gkG9gA2ZUxJA==}

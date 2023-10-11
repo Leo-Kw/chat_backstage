@@ -26,7 +26,7 @@ export class UserRegisterDto {
   @IsNotEmpty({ message: '账号不能为空' })
   account: string
 
-  @ApiProperty({ example: '小九', description: '用户昵称' })
+  @ApiProperty({ example: '航仔', description: '用户昵称' })
   @IsNotEmpty({ message: '用户昵称不能为空' })
   @MaxLength(8, { message: '用户昵称长度最多为8位' })
   name: string
@@ -69,4 +69,23 @@ export class UserRegisterDto {
 export class UserGetInfo {
   @ApiProperty({ example: 1, description: '用户ID' })
   id: number
+}
+
+export class UserAvatar {
+  @ApiProperty({ example: '1', description: '用户ID' })
+  userId: number
+}
+
+export class UserInfoDto {
+  @ApiProperty({ example: '1', description: '用户ID' })
+  id: number
+
+  @ApiProperty({ example: '小李', description: '用户昵称' })
+  name: string
+
+  @ApiProperty({
+    example: 1,
+    description: '用户性别(未知: 1, 男: 2, 女: 3)',
+  })
+  sex: number
 }

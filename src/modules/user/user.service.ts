@@ -4,14 +4,19 @@ import { hashSync, compareSync } from 'bcryptjs'
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
-import { UserLoginDto, UserRegisterDto } from './dto/user.dto'
+import {
+  UserAvatar,
+  UserInfoDto,
+  UserLoginDto,
+  UserRegisterDto,
+} from './dto/user.dto'
 import { UserInfoType } from './user.type'
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly UserModle: Repository<UserEntity>,
+    private readonly UserModel: Repository<UserEntity>,
     private readonly JwtService: JwtService,
   ) {}
 
@@ -23,14 +28,14 @@ export class UserService {
   async register(params: UserRegisterDto) {
     const { account, password, email } = params
     params.password = hashSync(password)
-    const u: any = await this.UserModle.findOne({
+    const u: any = await this.UserModel.findOne({
       where: [{ account }, { email }],
     })
     if (u) {
       const tips = account === u.name ? '用户名' : '邮箱'
       throw new HttpException(`该${tips}已经存在了！`, HttpStatus.BAD_REQUEST)
     }
-    await this.UserModle.save(params)
+    await this.UserModel.save(params)
     return true
   }
 
@@ -41,7 +46,7 @@ export class UserService {
    */
   async login(params: UserLoginDto): Promise<any> {
     const { account, password } = params
-    const u: any = await this.UserModle.findOne({
+    const u = await this.UserModel.findOne({
       where: { account },
       select: [
         'id',
@@ -83,9 +88,9 @@ export class UserService {
    * @param params
    * @returns
    */
-  async getUserInfo(payload: UserInfoType) {
-    const { id } = payload
-    const u = await this.UserModle.findOne({
+  async getUserInfo(params: UserInfoType) {
+    const { id } = params
+    const u = await this.UserModel.findOne({
       where: { id },
       select: [
         'id',
@@ -100,5 +105,36 @@ export class UserService {
       ],
     })
     return u
+  }
+
+  /**
+   * @desc 保存用户头像
+   * @param params
+   * @returns
+   */
+  async saveAvatar(params: UserAvatar & { avatar: string }) {
+    const { userId, avatar } = params
+    await this.UserModel.update(
+      { id: userId },
+      { avatar: process.env.HOST + avatar.match(/public\/(\S*)/)[1] },
+    )
+
+    return true
+  }
+  /**
+   * @desc 修改用户信息
+   * @param params
+   * @returns
+   */
+  async modifyUserInfo(params: UserInfoDto) {
+    const { id, name, sex } = params
+    await this.UserModel.update(
+      { id },
+      {
+        name,
+        sex,
+      },
+    )
+    return true
   }
 }

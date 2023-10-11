@@ -31,13 +31,4 @@ export class MessageEntity extends BaseEntity {
     default: 1,
   })
   messageStatus: number
-
-  @Column({ name: 'user_name', nullable: true, comment: '用户名称' })
-  userName: string
-
-  @Column({ name: 'user_avatar', nullable: true, comment: '用户头像' })
-  userAvatar: string
-
-  @Column({ name: 'user_role', nullable: true, comment: '用户角色' })
-  userRole: string
 }
