@@ -6,8 +6,6 @@ name: chat CI
 on:
   push:
     branches: ['master']
-  pull_request:
-    branches: ['master']
 
 env:
   SERVER_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }} # 服务器私钥
@@ -62,6 +60,6 @@ jobs:
           username: ${{ secrets.USER_NAME }} # 服务器用户名
           key: ${{ secrets.ACCESS_TOKEN }} # 服务器私钥
           script: |
-            cd /usr/local/chat_backstage
+            cd ${{ secrets.TARGET }}
             pnpm install
             pnpm build
