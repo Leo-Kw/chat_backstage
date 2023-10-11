@@ -33,24 +33,17 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
 
-      # 装依赖
-      - name: Install dependencies
-        run: pnpm install
-
-      # 打包
-      - name: Build
-        run: pnpm build
-
       # 上传打包资源
       - name: Deploy
-        uses: easingthemes/ssh-deploy@v2.1.2
+        uses: easingthemes/ssh-deploy@v4.1.10
         env:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }} # 服务器私钥
-          ARGS: "-avz --delete --exclude={'.env'}"
+          ARGS: '-avz --delete'
           SOURCE: './'
           REMOTE_HOST: ${{ secrets.SERVER_HOST }} # 服务器IP地址
           REMOTE_USER: ${{ secrets.USER_NAME }} # 服务器用户名
           TARGET: ${{ secrets.TARGET }} #  服务器目标路径
+          EXCLUDE: '.env'
 
       # 连接服务器执行脚本
       - name: SSH
