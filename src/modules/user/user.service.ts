@@ -118,7 +118,6 @@ export class UserService {
       { id: userId },
       { avatar: process.env.HOST + avatar.match(/public\/(\S*)/)[1] },
     )
-
     return true
   }
   /**

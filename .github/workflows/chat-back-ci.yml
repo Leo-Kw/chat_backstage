@@ -43,7 +43,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.SERVER_HOST }} # 服务器IP地址
           REMOTE_USER: ${{ secrets.USER_NAME }} # 服务器用户名
           TARGET: ${{ secrets.TARGET }} #  服务器目标路径
-          EXCLUDE: '.env, /node_modules/'
+          EXCLUDE: '.env, /node_modules/ /public/'
 
       # 连接服务器执行脚本
       - name: SSH
@@ -56,3 +56,4 @@ jobs:
             cd ${{ secrets.TARGET }}
             pnpm install
             pnpm build
+            pm2 restart chat_backstage
