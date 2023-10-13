@@ -9,8 +9,8 @@ import { Server, Socket } from 'socket.io'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MessageEntity } from './entities/message.entity'
 import { Repository } from 'typeorm'
-import { CreateChatDto } from './dto/create-chat.dto'
-import { UserEntity } from '../user/user.entity'
+import { CreateChatDto } from './dto/chat.dto'
+import { UserEntity } from '../user/entities/user.entity'
 
 @WebSocketGateway(3102, {
   path: '/chat-socket',

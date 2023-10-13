@@ -66,14 +66,9 @@ export class UserRegisterDto {
   status: number
 }
 
-export class UserGetInfo {
-  @ApiProperty({ example: 1, description: '用户ID' })
-  id: number
-}
-
 export class UserAvatar {
-  @ApiProperty({ example: '1', description: '用户ID' })
-  userId: number
+  @ApiProperty({ example: '上传的头像图片文件', description: '头像' })
+  file: Express.Multer.File
 }
 
 export class UserInfoDto {

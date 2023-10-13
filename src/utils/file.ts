@@ -11,3 +11,15 @@ export const checkDirAndCreate = (filePath: string) => {
     }
   }
 }
+
+export const removeFile = (filePath: string) => {
+  fs.unlink(filePath, (err) => {
+    if (err) throw err
+  })
+}
+
+export const removeFileDir = (filePath: string) => {
+  fs.rmdir(filePath, (err) => {
+    if (err) throw err
+  })
+}

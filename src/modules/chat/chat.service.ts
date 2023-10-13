@@ -4,7 +4,8 @@ import { In, Repository } from 'typeorm'
 // import { CreateChatDto } from './dto/create-chat.dto'
 // import { UpdateChatDto } from './dto/update-chat.dto'
 import { MessageEntity } from './entities/message.entity'
-import { UserEntity } from '../user/user.entity'
+import { UserEntity } from '../user/entities/user.entity'
+import { GetMessageDto } from './dto/chat.dto'
 
 @Injectable()
 export class ChatService {
@@ -15,8 +16,8 @@ export class ChatService {
     private readonly UserModel: Repository<UserEntity>,
   ) {}
 
-  async getMessage(params) {
-    const { page = 1, pageSize = 300, roomId = 1 } = params
+  async getMessage(params: GetMessageDto) {
+    const { page, pageSize, roomId } = params
     const history = await this.MessageModel.find({
       where: { roomId },
       order: { id: 'DESC' },

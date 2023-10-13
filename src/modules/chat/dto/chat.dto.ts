@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsNotEmpty } from 'class-validator'
 
 export class CreateChatDto {
@@ -22,4 +22,20 @@ export class CreateChatDto {
 
   @ApiProperty({ example: '1', description: '用户头像', required: true })
   userAvatar: '1'
+}
+
+export class UpdateChatDto extends PartialType(CreateChatDto) {}
+
+export class GetMessageDto {
+  @ApiProperty({ example: 1, description: '当前页', required: true })
+  @IsNotEmpty({ message: '当前页不能为空' })
+  page: number
+
+  @ApiProperty({ example: 20, description: '每页大小', required: true })
+  @IsNotEmpty({ message: '每页大小不能为空' })
+  pageSize: number
+
+  @ApiProperty({ example: 1, description: '房间ID', required: true })
+  @IsNotEmpty({ message: '房间ID不能为空' })
+  roomId: number
 }
