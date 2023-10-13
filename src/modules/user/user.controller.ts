@@ -11,12 +11,12 @@ import { UserService } from './user.service'
 import { ApiTags } from '@nestjs/swagger'
 import {
   UserAvatar,
-  UserGetInfo,
   UserInfoDto,
   UserLoginDto,
   UserRegisterDto,
 } from './dto/user.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { CommonRequest } from 'src/common/interface'
 
 @Controller('/user')
 @ApiTags('User')
@@ -34,8 +34,8 @@ export class UserController {
   }
 
   @Get('/info')
-  getUserInfo(@Request() req) {
-    return this.UserService.getUserInfo(req.payload)
+  getUserInfo(@Request() req: CommonRequest) {
+    return this.UserService.getUserInfo(req.user)
   }
 
   @Post('/avatar/upload')
@@ -43,10 +43,11 @@ export class UserController {
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: UserAvatar,
+    @Request() req: CommonRequest,
   ) {
     file.path = file.path.replace(/\\/g, '/')
     return this.UserService.saveAvatar({
-      userId: data.userId,
+      userId: req.user.id,
       avatar: file.path,
     })
   }

@@ -7,7 +7,7 @@ import * as dayjs from 'dayjs'
 
 import { expiresIn, secret } from 'src/config/jwt'
 import { UserController } from './user.controller'
-import { UserEntity } from './user.entity'
+import { UserEntity } from './entities/user.entity'
 import { UserService } from './user.service'
 import { checkDirAndCreate } from 'src/utils'
 

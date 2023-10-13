@@ -1,16 +1,12 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
-import { UserEntity } from './user.entity'
+import { UserEntity } from './entities/user.entity'
 import { hashSync, compareSync } from 'bcryptjs'
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
-import {
-  UserAvatar,
-  UserInfoDto,
-  UserLoginDto,
-  UserRegisterDto,
-} from './dto/user.dto'
+import { UserInfoDto, UserLoginDto, UserRegisterDto } from './dto/user.dto'
 import { UserInfoType } from './user.type'
+import { removeFile } from '../../utils'
 
 @Injectable()
 export class UserService {
@@ -112,11 +108,17 @@ export class UserService {
    * @param params
    * @returns
    */
-  async saveAvatar(params: UserAvatar & { avatar: string }) {
+  async saveAvatar(params: { avatar: string; userId: number }) {
     const { userId, avatar } = params
+    const host =
+      process.env.NODE_ENV === 'development'
+        ? process.env.HOST_DEV
+        : process.env.HOST_PRO
+    const u = await this.UserModel.findOne({ where: { id: userId } })
+    removeFile('./public/uploads/' + u.avatar.match(/uploads\/(\S*)/)[1])
     await this.UserModel.update(
       { id: userId },
-      { avatar: process.env.HOST + avatar.match(/public\/(\S*)/)[1] },
+      { avatar: host + avatar.match(/public\/(\S*)/)[1] },
     )
     return true
   }

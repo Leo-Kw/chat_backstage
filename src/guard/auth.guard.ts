@@ -12,7 +12,7 @@ import { secret, whiteList } from 'src/config/jwt'
 export class AuthGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest()
-    const { headers, path, route } = context.switchToRpc().getData()
+    const { headers, path } = context.switchToRpc().getData()
 
     if (whiteList.includes(path)) {
       return true
@@ -29,7 +29,7 @@ export class AuthGuard implements CanActivate {
           HttpStatus.UNAUTHORIZED,
         )
       }
-      request.payload = payload
+      request.user = payload
       return true
     } else {
       // if (isGet) return true
