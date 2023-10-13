@@ -115,7 +115,8 @@ export class UserService {
         ? process.env.HOST_DEV
         : process.env.HOST_PRO
     const u = await this.UserModel.findOne({ where: { id: userId } })
-    removeFile('./public/uploads/' + u.avatar.match(/uploads\/(\S*)/)[1])
+    u.avatar &&
+      removeFile('./public/uploads/' + u.avatar.match(/uploads\/(\S*)/)[1])
     await this.UserModel.update(
       { id: userId },
       { avatar: host + avatar.match(/public\/(\S*)/)[1] },
