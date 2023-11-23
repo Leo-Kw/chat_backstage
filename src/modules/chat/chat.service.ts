@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { In, Repository } from 'typeorm'
+import { In, Like, Repository } from 'typeorm'
 // import { CreateChatDto } from './dto/create-chat.dto'
 // import { UpdateChatDto } from './dto/update-chat.dto'
 import { MessageEntity } from './entities/message.entity'
 import { UserEntity } from '../user/entities/user.entity'
-import { GetMessageDto } from './dto/chat.dto'
+import { GetMessageDto, SearchHistoryDto } from './dto/chat.dto'
 
 @Injectable()
 export class ChatService {
@@ -39,7 +39,30 @@ export class ChatService {
 
     return result.reverse()
   }
-  uploadFile() {}
+
+  async searchHistory(params: SearchHistoryDto) {
+    const { page, pageSize, roomId, search } = params
+    const searchRes = await this.MessageModel.find({
+      where: { roomId, messageContent: Like(`%${search}%`) },
+      // order: { id: 'DESC' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    })
+
+    const userIds = searchRes.map((item) => item.userId)
+
+    const userInfoList = await this.UserModel.find({
+      where: { id: In(userIds) },
+      select: ['id', 'name', 'avatar', 'role'],
+    })
+
+    const result = searchRes.map((item) => ({
+      ...item,
+      userInfo: userInfoList.find((userItem) => userItem.id === item.userId),
+    }))
+
+    return result.reverse()
+  }
   // create(createChatDto: CreateChatDto) {
   //   return 'This action adds a new chat'
   // }
