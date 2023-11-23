@@ -5,7 +5,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets'
 import { ChatService } from './chat.service'
-import { Server, Socket } from 'socket.io'
+import { Server } from 'socket.io'
 import { InjectRepository } from '@nestjs/typeorm'
 import { MessageEntity } from './entities/message.entity'
 import { Repository } from 'typeorm'
@@ -23,7 +23,7 @@ import { UserEntity } from '../user/entities/user.entity'
 export class ChatGateway {
   constructor(
     @InjectRepository(MessageEntity)
-    private readonly MessageModle: Repository<MessageEntity>,
+    private readonly MessageModel: Repository<MessageEntity>,
     @InjectRepository(UserEntity)
     private readonly UserModel: Repository<UserEntity>,
     private readonly chatService: ChatService,
@@ -39,8 +39,9 @@ export class ChatGateway {
       quoteMessageId: null,
       roomId: 1,
     }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { userName, userRole, userId, ...restMessage } =
-      await this.MessageModle.save(params)
+      await this.MessageModel.save(params)
     const userInfo = await this.UserModel.findOne({
       where: { id: userId },
       select: ['name', 'role', 'avatar', 'id'],

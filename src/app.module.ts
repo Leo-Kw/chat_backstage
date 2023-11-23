@@ -6,24 +6,26 @@ import { ConfigModule, ConfigService } from 'nestjs-config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ServeStaticModule } from '@nestjs/serve-static'
 
-const anotationClass = (id) => {
-  console.log('anotationClass evaluated', id)
-  return (target) => console.log('anotationClass executed', id)
-}
+// const DecoratorClass = (metadata: ModuleMetadata): ClassDecorator => {
+//   console.log('DecoratorClass evaluated', metadata)
+//   return (target) => console.log('DecoratorClass executed', metadata, target)
+// }
 
-const anotationMethods = (id) => {
-  console.log('anotationMethods evaluated', id)
-  return (target, property, descriptor) =>
-    console.log('anotationMethods executed', id)
-}
+// const DecoratorMethods = (id: number): MethodDecorator => {
+//   console.log('DecoratorMethods evaluated', id)
+//   return (target, property, descriptor) => {
+//     console.log('DecoratorMethods executed', id, target, property, descriptor)
+//     return descriptor
+//   }
+// }
 
-@anotationClass(1)
-export class Example {
-  @anotationMethods(1)
-  methods() {
-    console.log(1)
-  }
-}
+// @DecoratorClass({})
+// export class Example {
+//   @DecoratorMethods(1)
+//   methods() {
+//     console.log(1)
+//   }
+// }
 
 @Module({
   imports: [

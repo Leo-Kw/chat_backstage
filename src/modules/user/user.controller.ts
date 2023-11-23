@@ -7,6 +7,7 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserService } from './user.service'
 import { ApiTags } from '@nestjs/swagger'
 import {
