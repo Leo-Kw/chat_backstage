@@ -6,9 +6,11 @@ import {
 } from '@nestjs/common'
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs'
+
 interface Response<T> {
   data: T
 }
+
 @Injectable()
 export class TransformInterceptor<T>
   implements NestInterceptor<T, Response<T>>

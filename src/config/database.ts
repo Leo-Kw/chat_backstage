@@ -1,31 +1,32 @@
+import { ConfigService } from '@nestjs/config'
 import { join } from 'path'
 import { DataSourceOptions } from 'typeorm'
 
-const developmentConfig: DataSourceOptions = {
+const developmentConfig = (
+  configService: ConfigService,
+): DataSourceOptions => ({
   type: 'mysql',
-  host: process.env.DB_HOST_DEV,
+  host: configService.get('DB_HOST_DEV'),
   port: 3306,
-  username: process.env.USERNAEM_DEV,
-  password: process.env.PASSWORD_DEV,
-  database: process.env.DB_DATABASE_DEV,
+  username: configService.get('USERNAEM_DEV'),
+  password: configService.get('PASSWORD_DEV'),
+  database: configService.get('DB_DATABASE_DEV'),
   entities: [join(__dirname, '../', '**/**.entity{.ts,.js}')],
-  logging: false,
   synchronize: true,
-}
+})
 
-const productionConfig: DataSourceOptions = {
+const productionConfig = (configService: ConfigService): DataSourceOptions => ({
   type: 'mysql',
-  host: process.env.DB_HOST_PRO,
+  host: configService.get('DB_HOST_PRO'),
   port: 3306,
-  username: process.env.USERNAEM_PRO,
-  password: process.env.PASSWORD_PRO,
-  database: process.env.DB_DATABASE_PRO,
+  username: configService.get('USERNAEM_PRO'),
+  password: configService.get('PASSWORD_PRO'),
+  database: configService.get('DB_DATABASE_PRO'),
   entities: [join(__dirname, '../', '**/**.entity{.ts,.js}')],
-  logging: false,
   synchronize: false,
-}
+})
 
-const DatabaseConfig: DataSourceOptions =
-  process.env.NODE_ENV === 'development' ? developmentConfig : productionConfig
-
-export default DatabaseConfig
+export const databaseConfig = (configService: ConfigService) =>
+  process.env.NODE_ENV === 'development'
+    ? developmentConfig(configService)
+    : productionConfig(configService)
