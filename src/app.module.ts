@@ -1,10 +1,14 @@
-import { Module } from '@nestjs/common'
-import { join, resolve } from 'path'
+import { MiddlewareConsumer, Module } from '@nestjs/common'
+import { join } from 'path'
 import { ChatModule } from './modules/chat/chat.module'
 import { UserModule } from './modules/user/user.module'
-import { ConfigModule, ConfigService } from 'nestjs-config'
+import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ServeStaticModule } from '@nestjs/serve-static'
+import { databaseConfig } from './config'
+import { WinstonModule } from 'nest-winston'
+import { winstonLogger } from './config/winston'
+import { LoggerMiddleware } from './middleware'
 
 // const DecoratorClass = (metadata: ModuleMetadata): ClassDecorator => {
 //   console.log('DecoratorClass evaluated', metadata)
@@ -32,10 +36,17 @@ import { ServeStaticModule } from '@nestjs/serve-static'
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
     }),
-    ConfigModule.load(resolve(__dirname, 'config', '**/!(*.d).{ts,js}')),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => config.get('database'),
+      imports: [ConfigModule],
+      useFactory: (config: ConfigService) => databaseConfig(config),
       inject: [ConfigService],
+    }),
+    WinstonModule.forRoot({
+      transports: winstonLogger.transports,
+      format: winstonLogger.format,
+      defaultMeta: winstonLogger.defaultMeta,
+      exitOnError: false,
     }),
     ChatModule,
     UserModule,
@@ -43,4 +54,8 @@ import { ServeStaticModule } from '@nestjs/serve-static'
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*')
+  }
+}

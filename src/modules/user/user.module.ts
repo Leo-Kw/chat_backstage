@@ -9,7 +9,7 @@ import { expiresIn, secret } from 'src/config/jwt'
 import { UserController } from './user.controller'
 import { UserEntity } from './entities/user.entity'
 import { UserService } from './user.service'
-import { checkDirAndCreate } from 'src/utils'
+import { checkDirAndCreate } from '../../utils'
 
 const image = ['gif', 'png', 'jpg', 'jpeg', 'bmp', 'webp']
 const video = ['mp4', 'webm']

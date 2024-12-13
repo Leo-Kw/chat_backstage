@@ -2,6 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common'
 import { UserEntity } from './entities/user.entity'
 import { hashSync, compareSync } from 'bcryptjs'
 import { InjectRepository } from '@nestjs/typeorm'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
 import { UserInfoDto, UserLoginDto, UserRegisterDto } from './dto/user.dto'
@@ -61,6 +62,7 @@ export class UserService {
       throw new HttpException('该用户不存在！', HttpStatus.BAD_REQUEST)
     }
     const bool = compareSync(password, u.password)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: dbPassword, ...rest } = u
     if (bool) {
       const { name, account, email, id, role } = u

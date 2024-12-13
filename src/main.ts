@@ -5,6 +5,7 @@ import { AppModule } from './app.module'
 import { TransformInterceptor } from './interceptor/transform.interceptor'
 import { AuthGuard } from './guard'
 import { createSwagger } from './swagger'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -13,12 +14,13 @@ async function bootstrap() {
   app.useGlobalGuards(new AuthGuard())
   app.useGlobalInterceptors(new TransformInterceptor())
   app.setGlobalPrefix('/api')
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER))
   createSwagger(app)
   await app.listen(process.env.PORT, () => {
     process.title = '航仔的 chat room'
-    Logger.log(`API服务已经启动,服务请访问:http://localhost:3101`)
-    Logger.log(`WebSocket服务已经启动,服务请访问:http://localhost:3102`)
-    Logger.log(`swagger已经启动,服务请访问:http://localhost:3101/docs`)
+    Logger.log(`API服务已经启动,服务请访问: http://localhost:3101`)
+    Logger.log(`WebSocket服务已经启动,服务请访问: http://localhost:3102`)
+    Logger.log(`swagger已经启动,服务请访问: http://localhost:3101/docs`)
   })
 }
 bootstrap()

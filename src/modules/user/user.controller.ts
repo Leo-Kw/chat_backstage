@@ -17,7 +17,7 @@ import {
   UserRegisterDto,
 } from './dto/user.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
-import { CommonRequest } from 'src/common/interface'
+import { CommonRequest } from '../../common/interface'
 
 @Controller('/user')
 @ApiTags('User')
