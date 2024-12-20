@@ -7,7 +7,9 @@ import { JwtService } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
 import { UserInfoDto, UserLoginDto, UserRegisterDto } from './dto/user.dto'
 import { UserInfoType } from './user.type'
-import { removeFile } from '../../utils'
+import { removeFile, verifyToken } from '../../utils'
+import { Request } from 'express'
+import { secret } from 'src/config'
 
 @Injectable()
 export class UserService {
@@ -125,6 +127,7 @@ export class UserService {
     )
     return true
   }
+
   /**
    * @desc 修改用户信息
    * @param params
@@ -140,5 +143,23 @@ export class UserService {
       },
     )
     return true
+  }
+
+  /**
+   * @desc 检查 token 是否过期
+   * @returns
+   */
+  async checkToken(req: Request) {
+    const token = req.headers.authorization
+
+    if (token) {
+      const payload = verifyToken(token, secret)
+      if (!payload) {
+        return false
+      }
+      return payload
+    } else {
+      return false
+    }
   }
 }
