@@ -5,8 +5,8 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common'
-import * as jwt from 'jsonwebtoken'
 import { secret, whiteList } from 'src/config/jwt'
+import { verifyToken } from 'src/utils/jwt'
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
     // const isGet = route.methods.get
 
     if (token) {
-      const payload = this.verifyToken(token, secret)
+      const payload = verifyToken(token, secret)
       if (!payload) {
         throw new HttpException(
           '身份验证失败，请重新登录',
@@ -35,30 +35,5 @@ export class AuthGuard implements CanActivate {
       // if (isGet) return true
       throw new HttpException('你还没登录，请先登录', HttpStatus.UNAUTHORIZED)
     }
-  }
-
-  /**
-   * @desc 全局校验token
-   * @param token
-   * @param secret
-   * @returns
-   */
-  private verifyToken(token: string, secret: string): any {
-    // return new Promise((resolve) => {
-    //   jwt.verify(token, secret, (error, payload) => {
-    //     if (error) {
-    //       resolve(false)
-    //     } else {
-    //       resolve(payload)
-    //     }
-    //   })
-    // })
-    return jwt.verify(token, secret, (error, payload) => {
-      if (error) {
-        return false
-      } else {
-        return payload
-      }
-    })
   }
 }

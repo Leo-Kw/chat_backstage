@@ -2,10 +2,10 @@ import {
   Controller,
   Post,
   Body,
-  Request,
   Get,
   UseInterceptors,
   UploadedFile,
+  Req,
 } from '@nestjs/common'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { UserService } from './user.service'
@@ -18,6 +18,7 @@ import {
 } from './dto/user.dto'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { CommonRequest } from '../../common/interface'
+import { Request } from 'express'
 
 @Controller('/user')
 @ApiTags('User')
@@ -34,8 +35,13 @@ export class UserController {
     return this.UserService.login(params)
   }
 
+  @Post('/token/check')
+  checkToken(@Req() req: Request) {
+    return this.UserService.checkToken(req)
+  }
+
   @Get('/info')
-  getUserInfo(@Request() req: CommonRequest) {
+  getUserInfo(@Req() req: CommonRequest) {
     return this.UserService.getUserInfo(req.user)
   }
 
@@ -44,7 +50,7 @@ export class UserController {
   uploadFile(
     @UploadedFile() file: Express.Multer.File,
     @Body() data: UserAvatar,
-    @Request() req: CommonRequest,
+    @Req() req: CommonRequest,
   ) {
     file.path = file.path.replace(/\\/g, '/')
     return this.UserService.saveAvatar({

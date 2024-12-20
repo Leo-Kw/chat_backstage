@@ -4,4 +4,5 @@ export const whiteList = [
   '/api/user/login',
   '/api/user/register',
   '/api/upload/file',
+  '/api/user/token/check',
 ]
